@@ -1,302 +1,828 @@
 <!DOCTYPE html>
-
-<html lang="id">
+<html class="light" lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Q-MANTIK | Quran Semantic Analytics Platform</title>
-
-```
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-```
-
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    
+    <!-- Custom styling to ensure absolute fidelity to the academic aesthetic -->
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #f8f9fa; 
+            color: #191c1d; 
+            min-height: 100vh;
+        }
+        .arabic-text { 
+            font-family: 'Noto Sans Arabic', serif; 
+        }
+        .material-symbols-outlined { 
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; 
+            vertical-align: middle; 
+            display: inline-block;
+            line-height: 1;
+        }
+        .shadow-tonal { 
+            box-shadow: 0 4px 10px -1px rgba(0, 56, 32, 0.04), 0 2px 4px -1px rgba(0, 56, 32, 0.02); 
+        }
+        .gold-glow { 
+            box-shadow: 0 0 15px rgba(204, 167, 48, 0.15); 
+        }
+        .bento-card {
+            background: #ffffff;
+            border: 1px solid #e1e3e4;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .bento-card:hover {
+            box-shadow: 0 8px 20px -4px rgba(0, 56, 32, 0.06);
+            transform: translateY(-2px);
+            border-color: #006d41;
+        }
+        /* Custom animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.08); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+        .pulse-animation {
+            animation: pulse 2.5s infinite ease-in-out;
+        }
+        .line-drawing {
+            stroke-dasharray: 8;
+            animation: dash 30s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: -1000; }
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { 
+            width: 6px; 
+            height: 6px; 
+        }
+        ::-webkit-scrollbar-track { 
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb { 
+            background: #c0c9c0; 
+            border-radius: 9999px; 
+        }
+    </style>
+    <!-- Tailwind Custom Config -->
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "background": "#f8f9fa",
+              "outline": "#707971",
+              "primary-fixed": "#b0f1c7",
+              "tertiary-fixed-dim": "#e9c349",
+              "on-primary-container": "#84c39b",
+              "on-error-container": "#93000a",
+              "surface-container-low": "#f3f4f5",
+              "on-tertiary-fixed": "#241a00",
+              "on-secondary-container": "#007144",
+              "inverse-primary": "#95d4ac",
+              "tertiary": "#735c00",
+              "surface-variant": "#e1e3e4",
+              "on-tertiary-fixed-variant": "#574500",
+              "on-primary-fixed-variant": "#0f5132",
+              "on-surface": "#191c1d",
+              "inverse-surface": "#2e3132",
+              "on-tertiary": "#ffffff",
+              "primary": "#003820",
+              "on-error": "#ffffff",
+              "surface-container-high": "#e7e8e9",
+              "on-tertiary-container": "#4f3d00",
+              "surface-dim": "#d9dadb",
+              "primary-container": "#0f5132",
+              "on-secondary-fixed": "#002110",
+              "primary-fixed-dim": "#95d4ac",
+              "secondary-fixed-dim": "#77da9f",
+              "outline-variant": "#c0c9c0",
+              "inverse-on-surface": "#f0f1f2",
+              "surface-container-lowest": "#ffffff",
+              "on-surface-variant": "#404942",
+              "error-container": "#ffdad6",
+              "on-secondary": "#ffffff",
+              "secondary": "#006d41",
+              "surface-bright": "#f8f9fa",
+              "error": "#ba1a1a",
+              "secondary-fixed": "#93f7ba",
+              "on-primary-fixed": "#002111",
+              "surface-container-highest": "#e1e3e4",
+              "secondary-container": "#90f4b7",
+              "on-primary": "#ffffff",
+              "surface": "#f8f9fa",
+              "on-background": "#191c1d",
+              "tertiary-container": "#cca730",
+              "surface-tint": "#2d6a48",
+              "surface-container": "#edeeef",
+              "on-secondary-fixed-variant": "#00522f",
+              "tertiary-fixed": "#ffe088"
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "2xl": "1rem",
+              "full": "9999px"
+            },
+            spacing: {
+              "md": "24px",
+              "base": "8px",
+              "xs": "4px",
+              "lg": "40px",
+              "container-max": "1280px",
+              "sm": "12px",
+              "xl": "64px",
+              "gutter": "16px"
+            }
+          }
+        }
+      }
+    </script>
 </head>
-<body>
+<body class="bg-background text-on-surface min-h-screen pb-24">
 
-```
-<!-- HEADER -->
-<header>
-    <h1>Q-MANTIK</h1>
-    <h2>Quran Semantic Analytics Platform</h2>
-
-    <p>
-        Menjelajahi Makna Al-Qur'an Melalui Pendekatan Semantik Toshihiko Izutsu
-    </p>
-
-    <p>
-        Platform Digital Humanities untuk analisis konsep-konsep Qur'ani
-        secara interaktif dan visual.
-    </p>
-
-    <div>
-        <input
-            type="text"
-            placeholder="Cari konsep Qur'ani (contoh: Ulul Albab, Jahl, Taqwa, Iman)"
-        >
-        <button>TELUSURI</button>
-    </div>
-
-    <div>
-        <span>Ulul Albab</span>
-        <span>Jahl</span>
-        <span>Taqwa</span>
-        <span>Iman</span>
-        <span>Kufr</span>
-        <span>Rahmah</span>
-    </div>
-</header>
-
-<!-- HASIL PENCARIAN -->
-<main>
-
-    <section>
-        <h2>ULUL ALBAB (أولو الألباب)</h2>
-
-        <p>
-            Orang-orang yang memiliki akal yang jernih,
-            mampu mengambil pelajaran dari ayat-ayat Allah,
-            dan memahami kebenaran secara mendalam.
-        </p>
-    </section>
-
-    <!-- MAKNA DASAR -->
-    <section>
-
-        <h2>Makna Dasar</h2>
-
-        <article>
-            <h3>Akar Kata</h3>
-            <p>أولو + لب</p>
-
-            <h3>Makna Lubb</h3>
-            <p>Inti, esensi, akal yang murni.</p>
-
-            <h3>Definisi</h3>
-            <p>
-                Orang yang memiliki pemahaman mendalam dan
-                kebijaksanaan dalam menerima petunjuk Allah.
-            </p>
-        </article>
-
-    </section>
-
-    <!-- MAKNA RELASIONAL -->
-    <section>
-
-        <h2>Makna Relasional</h2>
-
-        <div>
-
-            <h3>Konsep yang Berhubungan</h3>
-
-            <ul>
-                <li>Taqwa</li>
-                <li>Hikmah</li>
-                <li>Ilmu</li>
-                <li>Tadabbur</li>
-                <li>Syukur</li>
-            </ul>
-
+    <!-- TOP APP BAR -->
+    <header class="bg-background border-b border-outline-variant sticky top-0 z-40 shadow-sm h-16">
+        <div class="flex justify-between items-center w-full px-gutter max-w-md mx-auto h-full">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-2xl">menu_book</span>
+                <h1 class="text-headline-md font-extrabold text-primary tracking-tight">Q-MANTIK</h1>
+            </div>
+            <div class="flex items-center gap-2">
+                <button class="p-2 hover:bg-surface-container rounded-full transition-colors cursor-pointer" onclick="navigateTo('explore')">
+                    <span class="material-symbols-outlined text-primary">search</span>
+                </button>
+            </div>
         </div>
+    </header>
 
-        <div>
+    <!-- MAIN APP CANVAS (Scrollable area) -->
+    <main class="max-w-md mx-auto px-gutter pt-4 pb-12 space-y-6">
 
-            <h3>Konsep Berlawanan</h3>
-
-            <ul>
-                <li>Jahl</li>
-                <li>Ghaflah</li>
-                <li>Kufr</li>
-            </ul>
-
-        </div>
-
-    </section>
-
-    <!-- MAKNA DIAKRONIK -->
-    <section>
-
-        <h2>Makna Diakronik</h2>
-
-        <div>
-
-            <h3>Pra-Quranik</h3>
-            <p>
-                Pemimpin yang bijaksana dan berpengaruh
-                dalam masyarakat Arab.
-            </p>
-
-            <h3>Quranik</h3>
-            <p>
-                Orang yang mampu memahami petunjuk Allah
-                dan mengambil pelajaran.
-            </p>
-
-            <h3>Tafsir Klasik</h3>
-            <p>
-                Golongan berakal yang memahami syariat.
-            </p>
-
-            <h3>Tafsir Modern</h3>
-            <p>
-                Pribadi yang kritis, reflektif,
-                dan berintegritas.
-            </p>
-
-        </div>
-
-    </section>
-
-    <!-- KORPUS AYAT -->
-    <section>
-
-        <h2>Korpus Ayat</h2>
-
-        <article>
-
-            <h3>Al-Baqarah : 197</h3>
-
-            <blockquote>
-                وَاتَّقُونِ يَا أُولِي الْأَلْبَابِ
-            </blockquote>
-
-            <p>
-                "Bertakwalah kepada-Ku wahai orang-orang yang berakal."
-            </p>
-
-            <button>Lihat Tafsir</button>
-            <button>Hubungan Makna</button>
-            <button>Ayat Serupa</button>
-
-        </article>
-
-    </section>
-
-    <!-- SEMANTIC NETWORK -->
-    <section>
-
-        <h2>Semantic Network</h2>
-
-        <div>
-
-            <h3>Node Pusat</h3>
-            <p>ULUL ALBAB</p>
-
-            <h4>Terhubung Dengan</h4>
-
-            <ul>
-                <li>Taqwa</li>
-                <li>Hikmah</li>
-                <li>Ilmu</li>
-                <li>Tadabbur</li>
-                <li>Syukur</li>
-            </ul>
-
-            <h4>Node Negatif</h4>
-
-            <ul>
-                <li>Jahl</li>
-                <li>Ghaflah</li>
-                <li>Kufr</li>
-            </ul>
-
-        </div>
-
-    </section>
-
-    <!-- STATISTIK -->
-    <section>
-
-        <h2>Statistik Konsep</h2>
-
-        <div>
-
-            <h3>Jumlah Kemunculan</h3>
-            <p>16 Ayat</p>
-
-        </div>
-
-        <div>
-
-            <h3>Makkiyah</h3>
-            <p>5 Ayat</p>
-
-        </div>
-
-        <div>
-
-            <h3>Madaniyah</h3>
-            <p>11 Ayat</p>
-
-        </div>
-
-        <div>
-
-            <h3>Konsep Terdekat</h3>
-
-            <ol>
-                <li>Taqwa</li>
-                <li>Ilmu</li>
-                <li>Hikmah</li>
-                <li>Tadabbur</li>
-                <li>Syukur</li>
-            </ol>
-
-        </div>
-
-    </section>
-
-    <!-- PERBANDINGAN -->
-    <section>
-
-        <h2>Perbandingan Konsep</h2>
-
-        <h3>ULUL ALBAB VS JAHL</h3>
-
-        <div>
-
-            <article>
-
-                <h4>ULUL ALBAB</h4>
-
-                <p>
-                    Akal yang tercerahkan oleh petunjuk Allah.
+        <!-- ==========================================
+             SCREEN 1: EXPLORE / SEARCH (HOME)
+             ========================================== -->
+        <div data-screen="explore" class="space-y-6">
+            <!-- Hero Header Section -->
+            <section class="text-center py-6 relative overflow-hidden bg-surface-container-lowest rounded-2xl border border-outline-variant/60 p-5 shadow-tonal">
+                <div class="mb-4 inline-flex items-center px-3 py-1 rounded-full bg-secondary-container/50 text-on-secondary-container font-semibold text-[11px] uppercase tracking-wider">
+                    Digital Humanities Lab
+                </div>
+                <h2 class="text-3xl font-extrabold text-primary mb-2">Q-MANTIK</h2>
+                <h3 class="text-label-md font-semibold text-tertiary uppercase tracking-wider mb-4">Quran Semantic Analytics Platform</h3>
+                <p class="text-caption text-on-surface-variant max-w-sm mx-auto leading-relaxed">
+                    Platform Digital Humanities yang membantu pengguna memahami makna konsep-konsep Al-Qur'an melalui analisis semantik berbasis teori Toshihiko Izutsu.
                 </p>
 
-            </article>
+                <!-- Custom Search Bar -->
+                <div class="mt-6 w-full relative">
+                    <div class="flex gap-2 bg-white p-2 rounded-xl border border-outline-variant shadow-md focus-within:ring-2 focus-within:ring-primary focus-within:border-primary transition-all">
+                        <div class="relative flex-grow flex items-center">
+                            <span class="material-symbols-outlined absolute left-2 text-outline text-lg">search</span>
+                            <input id="explore-search-input" class="w-full pl-8 pr-2 py-2.5 rounded-lg border-none focus:ring-0 text-caption font-medium bg-transparent placeholder-outline-variant" placeholder="Cari konsep (Ulul Albab, Jahl, Taqwa...)" type="text" autocomplete="off"/>
+                        </div>
+                        <button id="explore-search-btn" class="bg-primary text-on-primary px-4 py-2.5 rounded-lg text-label-sm font-bold hover:bg-primary-container transition-all flex items-center gap-1 active:scale-95 cursor-pointer">
+                            TELUSURI
+                            <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                        </button>
+                    </div>
 
-            <article>
+                    <!-- Autocomplete suggestions dropdown -->
+                    <div id="explore-search-suggestions" class="absolute left-0 right-0 mt-1 bg-white border border-outline-variant rounded-xl shadow-lg z-30 max-h-60 overflow-y-auto hidden">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
 
-                <h4>JAHL</h4>
+                <!-- Popular Concept Tags -->
+                <div class="mt-6 space-y-2 text-left">
+                    <span class="text-caption font-semibold text-on-surface-variant block">Konsep Populer:</span>
+                    <div id="popular-concepts-tags" class="flex flex-wrap gap-2">
+                        <!-- Loaded dynamically -->
+                    </div>
+                </div>
+            </section>
 
-                <p>
-                    Ketidaktahuan dan tindakan tanpa ilmu.
-                </p>
+            <!-- Metodologi Semantik Section -->
+            <section class="space-y-4">
+                <div class="border-b border-outline-variant/60 pb-2">
+                    <h3 class="text-lg font-bold text-primary">Metodologi Semantik</h3>
+                    <p class="text-caption text-on-surface-variant mt-1 leading-relaxed">
+                        Menganalisis pandangan dunia Al-Qur'an melalui studi sinkronik dan diakronik. Menelusuri pergeseran makna dari masa pra-Islam hingga menjadi konsep teknis wahyu.
+                    </p>
+                    <a class="inline-flex items-center gap-1 text-tertiary font-bold text-caption hover:underline mt-2" href="#" onclick="navigateTo('credits')">
+                        Pelajari Teori Izutsu
+                        <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    </a>
+                </div>
 
-            </article>
+                <!-- Bento Grid Mockups -->
+                <div class="space-y-4">
+                    <!-- Visualisasi Jaringan Semantik -->
+                    <div class="bento-card rounded-2xl p-4 cursor-pointer" onclick="navigateTo('detail', {conceptId: 'ulul-albab'})">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-primary-fixed-dim">
+                                <span class="material-symbols-outlined">account_tree</span>
+                            </div>
+                            <div>
+                                <h4 class="text-label-md font-bold text-primary">Visualisasi Jaringan Semantik</h4>
+                                <p class="text-caption text-on-surface-variant leading-relaxed mt-0.5">
+                                    Hubungan antara kata kunci (focus word) dengan medan semantik sekitarnya.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="rounded-xl overflow-hidden border border-outline-variant/40 bg-surface-container-low p-2">
+                            <!-- Visual placeholder network representation -->
+                            <div class="h-28 w-full flex items-center justify-center relative bg-gradient-to-br from-primary/5 to-secondary/5">
+                                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-[8px] font-bold z-10 shadow-md">IMAN</div>
+                                <div class="w-7 h-7 rounded-full bg-secondary-container border border-secondary flex items-center justify-center text-on-secondary-container text-[7px] font-bold absolute top-3 left-10">Islam</div>
+                                <div class="w-7 h-7 rounded-full bg-secondary-container border border-secondary flex items-center justify-center text-on-secondary-container text-[7px] font-bold absolute bottom-2 right-12">Taqwa</div>
+                                <div class="w-7 h-7 rounded-full bg-error-container border border-error flex items-center justify-center text-on-error-container text-[7px] font-bold absolute top-5 right-8">Kufr</div>
+                                <svg class="absolute inset-0 w-full h-full stroke-primary/30 stroke-[1] stroke-dasharray-2">
+                                    <line x1="50" y1="30" x2="180" y2="56"></line>
+                                    <line x1="180" y1="56" x2="300" y2="80"></line>
+                                    <line x1="180" y1="56" x2="310" y2="25"></line>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
 
+                    <!-- Analisis Diakronik Card -->
+                    <div class="bento-card rounded-2xl p-4 flex justify-between items-center cursor-pointer" onclick="navigateTo('detail', {conceptId: 'ulul-albab'})">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-tertiary-container flex items-center justify-center text-on-tertiary-container">
+                                <span class="material-symbols-outlined">history</span>
+                            </div>
+                            <div>
+                                <h4 class="text-label-md font-bold text-primary">Analisis Diakronik</h4>
+                                <p class="text-caption text-on-surface-variant">Lacak evolusi kata dari Pra-Islam hingga Tafsir Modern.</p>
+                            </div>
+                        </div>
+                        <span class="material-symbols-outlined text-tertiary">verified</span>
+                    </div>
+
+                    <!-- Bento Trio (Small Cards) -->
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="bento-card rounded-xl p-3 flex flex-col justify-between items-center text-center">
+                            <span class="material-symbols-outlined text-secondary text-lg mb-2">bar_chart</span>
+                            <span class="text-[10px] font-bold text-primary block leading-tight">Frekuensi Kata</span>
+                        </div>
+                        <div class="bento-card rounded-xl p-3 flex flex-col justify-between items-center text-center">
+                            <span class="material-symbols-outlined text-secondary text-lg mb-2">translate</span>
+                            <span class="text-[10px] font-bold text-primary block leading-tight">Konteks Leksikal</span>
+                        </div>
+                        <div class="bento-card rounded-xl p-3 flex flex-col justify-between items-center text-center">
+                            <span class="material-symbols-outlined text-secondary text-lg mb-2">auto_awesome</span>
+                            <span class="text-[10px] font-bold text-primary block leading-tight">Sentimen Analitik</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Academic Citation Block -->
+            <section class="bg-surface-container-low p-4 rounded-2xl border-l-4 border-tertiary shadow-sm relative overflow-hidden">
+                <span class="absolute top-2 right-2 text-tertiary-container font-semibold text-[8px] uppercase tracking-wider">Citation</span>
+                <blockquote class="mb-4">
+                    <p class="text-caption font-medium text-primary italic leading-relaxed">
+                        "Bahasa bukan sekadar alat komunikasi, melainkan cermin dari struktur konseptual sebuah masyarakat. Melalui analisis semantik, kita membuka gerbang menuju Weltanschauung Al-Qur'an."
+                    </p>
+                </blockquote>
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-neutral-300 overflow-hidden border border-outline-variant flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-xl">person</span>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-bold text-primary">Interpretasi Digital Humanities</p>
+                        <p class="text-[9px] text-on-surface-variant">Inspirasi Metodologi Toshihiko Izutsu (1914-1993)</p>
+                    </div>
+                </div>
+            </section>
         </div>
 
-    </section>
+        <!-- ==========================================
+             SCREEN 2: CONCEPT DETAIL
+             ========================================== -->
+        <div data-screen="detail" class="space-y-6 hidden">
+            <!-- Back Button Navigation -->
+            <button class="inline-flex items-center gap-1.5 text-caption font-bold text-secondary hover:text-primary transition-colors cursor-pointer" onclick="navigateTo('explore')">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Kembali ke Penelusuran
+            </button>
 
-</main>
+            <!-- Hero Section -->
+            <section class="relative rounded-2xl overflow-hidden bg-primary-container p-6 flex flex-col justify-between items-start gap-4">
+                <div class="relative z-10 w-full">
+                    <div class="inline-flex items-center px-2.5 py-0.5 rounded-full bg-secondary text-on-secondary text-[9px] font-bold mb-3 uppercase tracking-wider">
+                        Analisis Konsep Qur'ani
+                    </div>
+                    <h2 id="detail-title" class="text-3xl font-extrabold text-on-primary-container leading-none mb-1">ULUL ALBAB</h2>
+                    <p id="detail-arabic" class="text-xl font-bold text-on-primary-container opacity-90 italic arabic-text mb-4">أولو الألباب</p>
+                    <p id="detail-translation" class="text-[11px] font-bold text-tertiary-fixed uppercase tracking-wider mb-3"></p>
+                    <p id="detail-desc" class="text-caption text-white opacity-90 leading-relaxed"></p>
+                </div>
+                
+                <!-- Root letter circle absolute -->
+                <div class="absolute -right-4 -bottom-4 opacity-15">
+                    <div class="w-36 h-36 rounded-full border-[10px] border-tertiary-container/30 flex items-center justify-center bg-transparent">
+                        <span id="detail-hero-root" class="text-5xl font-extrabold text-tertiary-fixed arabic-text">لب</span>
+                    </div>
+                </div>
+            </section>
 
-<!-- FOOTER -->
-<footer>
+            <!-- Makna Dasar (Bento 1) -->
+            <section class="bg-white border border-outline-variant/60 rounded-2xl p-4 shadow-tonal space-y-4">
+                <div class="flex items-center gap-1.5 border-b border-primary/20 pb-2">
+                    <span class="material-symbols-outlined text-primary text-xl">auto_stories</span>
+                    <h3 class="text-label-sm font-bold text-primary uppercase tracking-wider">Makna Dasar</h3>
+                </div>
+                <div class="space-y-3">
+                    <div class="p-3 bg-surface-container-low rounded-xl border-l-4 border-tertiary">
+                        <span class="text-[9px] font-bold text-outline uppercase block mb-0.5">Akar Kata</span>
+                        <p id="detail-akar" class="text-caption font-bold text-primary"></p>
+                    </div>
+                    <div class="p-3 bg-surface-container-low rounded-xl border-l-4 border-secondary">
+                        <span class="text-[9px] font-bold text-outline uppercase block mb-0.5">Makna Lubb</span>
+                        <p id="detail-lubb" class="text-caption font-semibold text-primary"></p>
+                    </div>
+                    <div class="p-3 bg-surface-container-low rounded-xl border-l-4 border-primary">
+                        <span class="text-[9px] font-bold text-outline uppercase block mb-0.5">Definisi Semantik</span>
+                        <p id="detail-definisi" class="text-caption font-medium text-on-surface-variant leading-relaxed"></p>
+                    </div>
+                </div>
+            </section>
 
-    <p>Q-MANTIK © 2026</p>
+            <!-- Interactive SVG Semantic Network (Bento 2) -->
+            <section class="bg-white border border-outline-variant/60 rounded-2xl p-4 shadow-tonal space-y-4">
+                <div class="flex items-center justify-between border-b border-primary/20 pb-2">
+                    <div class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-primary text-xl">hub</span>
+                        <h3 class="text-label-sm font-bold text-primary uppercase tracking-wider">Semantic Network</h3>
+                    </div>
+                    <span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container text-[8px] font-bold">Interaktif</span>
+                </div>
+                
+                <!-- Dynamic SVG Rendering Canvas -->
+                <div class="relative w-full h-[300px] bg-background/40 rounded-xl overflow-hidden border border-outline-variant/30 flex items-center justify-center">
+                    <svg id="detail-network-svg" class="w-full h-full">
+                        <!-- Rendered by app.js -->
+                    </svg>
+                </div>
 
-    <p>
-        Digital Humanities Project
-        Ilmu Al-Qur'an dan Tafsir
-    </p>
+                <div class="grid grid-cols-2 gap-2 text-[8px] font-semibold text-on-surface-variant p-1 bg-surface-container-low rounded-lg">
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-2.5 h-2.5 rounded-full bg-secondary"></div>
+                        <span>Korelasi Positif (Konvergen)</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <div class="w-2.5 h-2.5 rounded-full bg-error"></div>
+                        <span>Korelasi Negatif (Divergen)</span>
+                    </div>
+                </div>
+            </section>
 
-    <p>
-        Powered by Semantic Approach of Toshihiko Izutsu
-    </p>
+            <!-- Makna Relasional Lists (Positive / Negative) -->
+            <section class="bg-white border border-outline-variant/60 rounded-2xl p-4 shadow-tonal space-y-4">
+                <div class="flex items-center gap-1.5 border-b border-primary/20 pb-2">
+                    <span class="material-symbols-outlined text-primary text-xl">schema</span>
+                    <h3 class="text-label-sm font-bold text-primary uppercase tracking-wider">Makna Relasional</h3>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-caption font-bold text-secondary mb-2 block">Medan Asosiasi Positif</span>
+                        <div id="detail-relations-positive" class="flex flex-wrap gap-2">
+                            <!-- Filled dynamically -->
+                        </div>
+                    </div>
+                    <div class="pt-3 border-t border-outline-variant/30">
+                        <span class="text-caption font-bold text-error mb-2 block">Medan Oposisi Negatif</span>
+                        <div id="detail-relations-negative" class="flex flex-wrap gap-2">
+                            <!-- Filled dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-</footer>
-```
+            <!-- Makna Diakronik Timeline -->
+            <section class="bg-white border border-outline-variant/60 rounded-2xl p-4 shadow-tonal space-y-4">
+                <div class="flex items-center gap-1.5 border-b border-primary/20 pb-2">
+                    <span class="material-symbols-outlined text-primary text-xl">timeline</span>
+                    <h3 class="text-label-sm font-bold text-primary uppercase tracking-wider">Makna Diakronik (Timeline)</h3>
+                </div>
+                <div class="relative pl-5 border-l-2 border-tertiary-container space-y-5 ml-2.5 py-1">
+                    <!-- Pra-Quranik -->
+                    <div class="relative group">
+                        <div class="absolute -left-[27px] top-1.5 w-3 h-3 rounded-full bg-white border-2 border-tertiary-container group-hover:scale-125 transition-transform"></div>
+                        <h4 class="text-caption font-bold text-primary leading-none mb-1">Pra-Quranik</h4>
+                        <p id="timeline-pra-quran" class="text-[11px] text-on-surface-variant leading-relaxed"></p>
+                    </div>
+                    <!-- Quranik -->
+                    <div class="relative group">
+                        <div class="absolute -left-[27px] top-1.5 w-3.5 h-3.5 rounded-full bg-primary border-2 border-tertiary-container group-hover:scale-125 transition-transform shadow-sm"></div>
+                        <h4 class="text-caption font-bold text-secondary leading-none mb-1">Quranik</h4>
+                        <p id="timeline-quran" class="text-[11px] text-on-surface-variant leading-relaxed"></p>
+                    </div>
+                    <!-- Tafsir Klasik -->
+                    <div class="relative group">
+                        <div class="absolute -left-[27px] top-1.5 w-3 h-3 rounded-full bg-white border-2 border-tertiary-container group-hover:scale-125 transition-transform"></div>
+                        <h4 class="text-caption font-bold text-primary leading-none mb-1">Tafsir Klasik</h4>
+                        <p id="timeline-klasik" class="text-[11px] text-on-surface-variant leading-relaxed"></p>
+                    </div>
+                    <!-- Tafsir Modern -->
+                    <div class="relative group">
+                        <div class="absolute -left-[27px] top-1.5 w-3 h-3 rounded-full bg-white border-2 border-tertiary-container group-hover:scale-125 transition-transform"></div>
+                        <h4 class="text-caption font-bold text-primary leading-none mb-1">Tafsir Modern</h4>
+                        <p id="timeline-modern" class="text-[11px] text-on-surface-variant leading-relaxed"></p>
+                    </div>
+                </div>
+            </section>
 
+            <!-- Korpus Ayat (Featured Verse) -->
+            <section class="space-y-3">
+                <h3 class="text-label-md font-bold text-primary uppercase tracking-wider px-1">Sampel Korpus Ayat</h3>
+                <div id="detail-verse-card" class="bg-surface-container-lowest border border-outline-variant/60 rounded-2xl p-4 shadow-tonal relative overflow-hidden">
+                    <div id="detail-verse-citation" class="absolute top-0 right-0 p-2 text-tertiary-container text-[8px] font-bold uppercase tracking-wider bg-surface-container-high rounded-bl-xl border-l border-b border-outline-variant/30">
+                        Citation: QS. Al-Baqarah : 197
+                    </div>
+                    <div class="pt-6 pb-4 text-center border-b border-outline-variant/30">
+                        <p id="detail-verse-arabic" class="text-xl font-bold arabic-text text-primary leading-loose mb-3"></p>
+                        <p id="detail-verse-translation" class="text-caption text-on-surface-variant italic"></p>
+                    </div>
+                    <div class="flex flex-wrap gap-2 pt-3">
+                        <button id="btn-lihat-tafsir" class="bg-primary text-on-primary px-3 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1 hover:opacity-90 active:scale-95 transition-all cursor-pointer">
+                            <span class="material-symbols-outlined text-sm">visibility</span> Lihat Tafsir
+                        </button>
+                        <button id="btn-hubungan-makna" class="border border-secondary text-secondary px-3 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1 hover:bg-secondary-container/30 transition-all cursor-pointer">
+                            <span class="material-symbols-outlined text-sm">hub</span> Hubungan Makna
+                        </button>
+                        <button id="btn-ayat-serupa" class="border border-outline text-on-surface-variant px-3 py-1.5 rounded-lg text-[10px] font-bold flex items-center gap-1 hover:bg-surface-container transition-all cursor-pointer">
+                            <span class="material-symbols-outlined text-sm">find_in_page</span> Ayat Serupa
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistik & Distribusi -->
+            <section class="grid grid-cols-2 gap-4">
+                <!-- Frequency Card -->
+                <div class="bg-white border border-outline-variant/60 p-4 rounded-2xl shadow-tonal flex flex-col justify-between">
+                    <div>
+                        <span class="text-[9px] font-bold text-on-surface-variant uppercase tracking-wider block">Frekuensi</span>
+                        <div class="mt-2">
+                            <span id="detail-stat-total" class="text-3xl font-extrabold text-primary">16 Ayat</span>
+                        </div>
+                    </div>
+                    <p class="text-[9px] text-outline mt-2">Tersebar di berbagai surah</p>
+                </div>
+
+                <!-- Distribution Card -->
+                <div class="bg-white border border-outline-variant/60 p-4 rounded-2xl shadow-tonal space-y-3">
+                    <span class="text-[9px] font-bold text-on-surface-variant uppercase tracking-wider block">Distribusi Wahyu</span>
+                    <div class="space-y-2 text-[9px] font-semibold text-on-surface-variant">
+                        <div>
+                            <div id="detail-stat-makkiyah-text" class="flex justify-between mb-0.5">
+                                <span>Makkiyah</span>
+                                <span class="text-secondary font-bold">5 Ayat</span>
+                            </div>
+                            <div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+                                <div id="detail-stat-makkiyah-bar" class="bg-secondary h-full" style="width: 31%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div id="detail-stat-madaniyah-text" class="flex justify-between mb-0.5">
+                                <span>Madaniyah</span>
+                                <span class="text-primary font-bold">11 Ayat</span>
+                            </div>
+                            <div class="w-full bg-surface-container-high h-1.5 rounded-full overflow-hidden">
+                                <div id="detail-stat-madaniyah-bar" class="bg-primary h-full" style="width: 69%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Occurrence trend graph -->
+                <div class="col-span-2 bg-white border border-outline-variant/60 p-4 rounded-2xl shadow-tonal">
+                    <span class="text-[9px] font-bold text-primary uppercase tracking-wider block mb-3">Tren Kemunculan Per Juz</span>
+                    <div id="detail-stat-juz-chart" class="h-20 w-full flex items-end gap-1 px-1 border-b border-outline-variant/40 pb-0.5">
+                        <!-- Bars dynamically loaded by app.js -->
+                    </div>
+                    <div class="flex justify-between mt-1 text-[8px] text-outline font-medium">
+                        <span>Juz 1</span>
+                        <span>Juz 15</span>
+                        <span>Juz 30</span>
+                    </div>
+                </div>
+
+                <!-- Konsep Terdekat List -->
+                <div class="col-span-2 bg-white border border-outline-variant/60 rounded-2xl shadow-tonal overflow-hidden flex flex-col">
+                    <div class="p-3 bg-surface-container border-b border-outline-variant/60">
+                        <h4 class="text-caption font-bold text-primary uppercase tracking-wider flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm">settings_input_component</span>
+                            Konsep Semantik Terdekat
+                        </h4>
+                    </div>
+                    <div id="detail-closest-concepts" class="p-2 space-y-1">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ==========================================
+             SCREEN 3: COMPARE ENGINE
+             ========================================== -->
+        <div data-screen="compare" class="space-y-6 hidden">
+            <!-- Screen Header -->
+            <div class="text-center md:text-left">
+                <h2 class="text-2xl font-bold text-primary">Komparasi Semantik</h2>
+                <p class="text-caption text-on-surface-variant mt-0.5">Uji dikotomi konseptual dan kesamaan ruang semantik secara dinamis.</p>
+            </div>
+
+            <!-- Dynamic Picker Selector -->
+            <section class="bg-white border border-outline-variant/60 p-4 rounded-2xl shadow-tonal space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[9px] font-bold text-outline block mb-1 uppercase">Konsep A</label>
+                        <select id="compare-picker-left" class="w-full text-caption font-medium border border-outline-variant rounded-lg py-2 px-3 focus:ring-2 focus:ring-primary focus:border-primary">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-outline block mb-1 uppercase">Konsep B</label>
+                        <select id="compare-picker-right" class="w-full text-caption font-medium border border-outline-variant rounded-lg py-2 px-3 focus:ring-2 focus:ring-primary focus:border-primary">
+                            <!-- Populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Semantic Distance Index -->
+            <section class="bg-white border border-outline-variant/60 p-4 rounded-2xl shadow-tonal space-y-3">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h3 class="text-[9px] font-bold uppercase tracking-wider text-outline mb-0.5">Semantic Distance Index</h3>
+                        <p class="text-lg font-bold text-primary flex items-baseline gap-1">
+                            <span id="compare-distance-value" class="text-2xl">0.84</span>
+                            <span id="compare-distance-type" class="text-[9px] font-medium text-on-surface-variant">/ 1.00 Divergensi</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="w-full h-3 bg-surface-container-high rounded-full relative overflow-hidden">
+                    <div id="compare-distance-bar" class="absolute left-0 top-0 h-full bg-gradient-to-r from-secondary to-tertiary w-[84%] rounded-full shadow-[0_0_6px_rgba(0,109,65,0.2)]"></div>
+                </div>
+            </section>
+
+            <!-- Comparative Panels Side-by-Side (Accordion-style on mobile) -->
+            <div class="space-y-4">
+                <!-- Concept Left Card -->
+                <div class="bg-white border-t-4 border-secondary rounded-2xl p-4 shadow-tonal space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="bg-secondary-container/50 text-on-secondary-container text-[8px] font-bold px-2 py-0.5 rounded-full mb-1 inline-block uppercase">KONSEP A</span>
+                            <h3 id="compare-left-title" class="text-xl font-bold text-primary">ULUL ALBAB</h3>
+                            <p id="compare-left-sub" class="text-[10px] text-on-surface-variant italic mt-0.5">"The Core Intelligence"</p>
+                        </div>
+                        <p id="compare-left-arabic" class="text-lg font-bold text-secondary arabic-text">أولو الألباب</p>
+                    </div>
+                    
+                    <div class="bg-surface-container-low p-3 rounded-xl text-caption">
+                        <span class="text-[9px] font-bold text-outline block mb-1 uppercase">Akar Kata</span>
+                        <p id="compare-left-root" class="font-bold text-primary"></p>
+                    </div>
+                    
+                    <div class="bg-surface-container-low p-3 rounded-xl">
+                        <div class="flex justify-between text-[8px] font-bold text-outline uppercase mb-2">
+                            <span>Sampel Ayat</span>
+                            <span id="compare-left-verse-ref" class="text-tertiary">Al-Baqarah:197</span>
+                        </div>
+                        <p id="compare-left-verse-arabic" class="text-caption font-bold text-primary arabic-text text-right leading-loose mb-1"></p>
+                        <p id="compare-left-verse-trans" class="text-[10px] text-on-surface-variant italic"></p>
+                    </div>
+
+                    <div id="compare-left-features" class="space-y-2 pt-2">
+                        <!-- Timeline comparison dynamically loaded -->
+                    </div>
+                </div>
+
+                <!-- Concept Right Card -->
+                <div class="bg-white border-t-4 border-error rounded-2xl p-4 shadow-tonal space-y-3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="bg-error-container/50 text-on-error-container text-[8px] font-bold px-2 py-0.5 rounded-full mb-1 inline-block uppercase">KONSEP B</span>
+                            <h3 id="compare-right-title" class="text-xl font-bold text-primary">JAHL</h3>
+                            <p id="compare-right-sub" class="text-[10px] text-on-surface-variant italic mt-0.5">"Ignorance"</p>
+                        </div>
+                        <p id="compare-right-arabic" class="text-lg font-bold text-error arabic-text">الجهل</p>
+                    </div>
+                    
+                    <div class="bg-surface-container-low p-3 rounded-xl text-caption">
+                        <span class="text-[9px] font-bold text-outline block mb-1 uppercase">Akar Kata</span>
+                        <p id="compare-right-root" class="font-bold text-primary"></p>
+                    </div>
+                    
+                    <div class="bg-surface-container-low p-3 rounded-xl">
+                        <div class="flex justify-between text-[8px] font-bold text-outline uppercase mb-2">
+                            <span>Sampel Ayat</span>
+                            <span id="compare-right-verse-ref" class="text-error">Al-Furqan:63</span>
+                        </div>
+                        <p id="compare-right-verse-arabic" class="text-caption font-bold text-primary arabic-text text-right leading-loose mb-1"></p>
+                        <p id="compare-right-verse-trans" class="text-[10px] text-on-surface-variant italic"></p>
+                    </div>
+
+                    <div id="compare-right-features" class="space-y-2 pt-2">
+                        <!-- Timeline comparison dynamically loaded -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dynamic Synthesis Card -->
+            <section class="bg-surface-container-low border border-outline-variant/60 rounded-2xl p-4 shadow-tonal text-center">
+                <span class="material-symbols-outlined text-tertiary text-4xl mb-2" style="font-variation-settings: 'FILL' 1">school</span>
+                <h4 class="text-caption font-bold text-primary uppercase tracking-wider mb-2">Sintesis Akademis</h4>
+                <p id="compare-synthesis-text" class="text-[11px] text-on-surface-variant leading-relaxed px-1">
+                    Ulul Albab mewakili puncak epistemologi dalam Islam, di mana kognisi bertemu dengan kontemplasi ilahi, sedangkan Jahl adalah impulsivitas dan perlawanan terhadap kebenaran moral.
+                </p>
+            </section>
+        </div>
+
+        <!-- ==========================================
+             SCREEN 4: LIBRARY / CORPUS EXPLORER
+             ========================================== -->
+        <div data-screen="library" class="space-y-6 hidden">
+            <!-- Screen Header -->
+            <div>
+                <h2 class="text-2xl font-bold text-primary">Library & Korpus Ayat</h2>
+                <p class="text-caption text-on-surface-variant mt-0.5">Jelajahi seluruh ayat yang memuat konsep-konsep semantik.</p>
+            </div>
+
+            <!-- Filter Controls -->
+            <section class="bg-white border border-outline-variant/60 p-4 rounded-2xl shadow-tonal space-y-3">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[9px] font-bold text-outline block mb-1 uppercase">Filter Konsep</label>
+                        <select id="library-concept-filter" class="w-full text-caption font-medium border border-outline-variant rounded-lg py-2 px-3 focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option value="all">Semua Konsep</option>
+                            <option value="ulul-albab">Ulul Albab</option>
+                            <option value="jahl">Jahl</option>
+                            <option value="taqwa">Taqwa</option>
+                            <option value="iman">Iman</option>
+                            <option value="kufr">Kufr</option>
+                            <option value="rahmah">Rahmah</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-bold text-outline block mb-1 uppercase">Filter Periodisasi</label>
+                        <select id="library-period-filter" class="w-full text-caption font-medium border border-outline-variant rounded-lg py-2 px-3 focus:ring-2 focus:ring-primary focus:border-primary">
+                            <option value="all">Semua Periode</option>
+                            <option value="makkiyah">Makkiyah</option>
+                            <option value="madaniyah">Madaniyah</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="pt-2 border-t border-outline-variant/20 flex justify-between items-center text-[10px] text-outline font-semibold">
+                    <span id="library-results-count">Menampilkan 0 ayat dari korpus.</span>
+                </div>
+            </section>
+
+            <!-- Verses Container -->
+            <div id="library-verses-list" class="space-y-4">
+                <!-- Dynamically loaded -->
+            </div>
+        </div>
+
+        <!-- ==========================================
+             SCREEN 5: CREDITS (METHODOLOGY)
+             ========================================== -->
+        <div data-screen="credits" class="space-y-6 hidden">
+            <!-- Screen Header -->
+            <div class="text-center pb-2 border-b border-outline-variant/60">
+                <h2 class="text-2xl font-bold text-primary">Q-MANTIK Project Credits</h2>
+                <p class="text-caption text-on-surface-variant mt-0.5">Digital Humanities Lab - Ilmu Al-Qur'an dan Tafsir</p>
+            </div>
+
+            <!-- About Toshihiko Izutsu -->
+            <section class="bg-white border border-outline-variant/60 rounded-2xl p-4 shadow-tonal space-y-3">
+                <h3 class="text-caption font-bold text-primary uppercase tracking-wider">Metodologi Toshihiko Izutsu</h3>
+                <p class="text-caption text-on-surface-variant leading-relaxed">
+                    Toshihiko Izutsu (1914–1993) adalah pemikir dan islamolog asal Jepang yang memelopori analisis semantik Al-Qur'an menggunakan linguistik struktural. Pendekatannya membagi makna kata ke dalam:
+                </p>
+                <ul class="space-y-2 text-caption text-on-surface-variant pl-4 list-disc">
+                    <li><strong>Makna Dasar (Basic Meaning):</strong> Makna inheren yang melekat pada kata tersebut, bahkan di luar konteks Qur'ani.</li>
+                    <li><strong>Makna Relasional (Relational Meaning):</strong> Makna baru yang diperoleh ketika kata tersebut diletakkan dalam medan semantik terstruktur di dalam sistem konseptual Al-Qur'an.</li>
+                    <li><strong>Sinkronik & Diakronik:</strong> Melacak evolusi konsep sebelum datangnya Islam (Pra-Quranik), selama pewahyuan (Quranik), hingga perkembangan teologis selanjutnya (Klasik & Modern).</li>
+                </ul>
+            </section>
+
+            <!-- Tech Details -->
+            <section class="bg-white border border-outline-variant/60 rounded-2xl p-4 shadow-tonal space-y-3">
+                <h3 class="text-caption font-bold text-primary uppercase tracking-wider">Teknologi & Lab</h3>
+                <p class="text-caption text-on-surface-variant leading-relaxed">
+                    Aplikasi ini dirancang sebagai purwarupa DH (Digital Humanities) untuk memvisualisasikan korelasi teks dan metadata linguistik Quran secara interaktif bagi akademisi, peneliti, dan mahasiswa tafsir.
+                </p>
+                <div class="pt-2 flex justify-between items-center text-[10px] text-outline font-semibold border-t border-outline-variant/20">
+                    <span>Versi App: 2.0 (Mobile SPA)</span>
+                    <span>© 2026 Q-MANTIK</span>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- ==========================================
+         FOOTER AESTHETIC
+         ========================================== -->
+    <footer class="max-w-md mx-auto px-gutter py-6 border-t border-outline-variant/60 bg-surface-container-lowest text-center space-y-2">
+        <span class="text-[10px] font-bold text-primary">Q-MANTIK</span>
+        <p class="text-[9px] text-on-surface-variant">© 2026 Q-MANTIK Digital Humanities. All Research Rights Reserved.</p>
+        <p class="text-[9px] text-tertiary font-semibold">Powered by Semantic Approach of Toshihiko Izutsu</p>
+    </footer>
+
+    <!-- ==========================================
+         BOTTOM NAV BAR (Fixed Bottom)
+         ========================================== -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-surface border-t border-outline-variant/80 shadow-lg z-40">
+        <div class="max-w-md mx-auto flex justify-around items-center py-2 px-1">
+            <!-- Nav item 1: Explore -->
+            <a href="#" data-nav="explore" class="flex flex-col items-center justify-center text-on-surface-variant p-2.5 rounded-xl transition-all scale-100 hover:bg-surface-container-low">
+                <span class="material-symbols-outlined text-[22px]">explore</span>
+                <span class="text-[10px] font-bold mt-0.5">Explore</span>
+            </a>
+            <!-- Nav item 2: Compare -->
+            <a href="#" data-nav="compare" class="flex flex-col items-center justify-center text-on-surface-variant p-2.5 rounded-xl transition-all scale-100 hover:bg-surface-container-low">
+                <span class="material-symbols-outlined text-[22px]">compare_arrows</span>
+                <span class="text-[10px] font-bold mt-0.5">Compare</span>
+            </a>
+            <!-- Nav item 3: Library -->
+            <a href="#" data-nav="library" class="flex flex-col items-center justify-center text-on-surface-variant p-2.5 rounded-xl transition-all scale-100 hover:bg-surface-container-low">
+                <span class="material-symbols-outlined text-[22px]">auto_stories</span>
+                <span class="text-[10px] font-bold mt-0.5">Library</span>
+            </a>
+            <!-- Nav item 4: Credits -->
+            <a href="#" data-nav="credits" class="flex flex-col items-center justify-center text-on-surface-variant p-2.5 rounded-xl transition-all scale-100 hover:bg-surface-container-low">
+                <span class="material-symbols-outlined text-[22px]">school</span>
+                <span class="text-[10px] font-bold mt-0.5">Credits</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+         MODAL WINDOW (TAFSIR OVERLAY)
+         ========================================== -->
+    <div id="tafsir-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl max-w-md w-full border border-outline-variant shadow-2xl flex flex-col max-h-[85vh] overflow-hidden animate-fade-in">
+            <!-- Modal Header -->
+            <div class="p-4 border-b border-outline-variant/60 flex justify-between items-center bg-surface-container-low">
+                <div>
+                    <h4 id="modal-title" class="text-caption font-bold text-primary">Tafsir Makna Ayat</h4>
+                    <span id="modal-concept" class="text-[8px] bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded font-bold uppercase tracking-wider">Taqwa</span>
+                </div>
+                <button id="modal-close-btn" class="p-1 hover:bg-surface-container rounded-full transition-colors cursor-pointer">
+                    <span class="material-symbols-outlined text-on-surface-variant text-lg">close</span>
+                </button>
+            </div>
+            
+            <!-- Modal Content (Scrollable) -->
+            <div class="p-4 overflow-y-auto space-y-4 text-left">
+                <!-- Verse Arabic -->
+                <div class="p-3 bg-surface rounded-xl border border-outline-variant/40 text-center">
+                    <p id="modal-arabic" class="text-lg font-bold text-primary arabic-text leading-loose mb-2"></p>
+                    <p id="modal-translation" class="text-caption text-on-surface-variant italic"></p>
+                </div>
+                
+                <!-- Tafsir Detail -->
+                <div class="space-y-1.5">
+                    <h5 class="text-caption font-bold text-primary uppercase tracking-wider flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">history_edu</span>
+                        Penjelasan Semantik & Tafsir
+                    </h5>
+                    <p id="modal-tafsir-text" class="text-caption text-on-surface-variant leading-relaxed"></p>
+                </div>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="p-3 border-t border-outline-variant/60 bg-surface-container-low text-right">
+                <button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-caption font-bold hover:bg-primary-container transition-all cursor-pointer" onclick="closeTafsir()">
+                    TUTUP
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CORE LOGIC BINDINGS -->
+    <script src="app.js"></script>
 </body>
 </html>
